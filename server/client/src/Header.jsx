@@ -1,4 +1,4 @@
 import React from 'react';
 
 export default () =>
-<h>Header</h>
+<h3>Header</h3>

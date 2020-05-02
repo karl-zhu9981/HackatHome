@@ -1,4 +1,4 @@
 import React from 'react';
 
 export default () =>
-<h>Footer</h>
+<h5>Footer</h5>
