@@ -18,22 +18,30 @@ const client = new MongoClient(uri, { useNewUrlParser: true });
 client.connect(err => {
   const collection = client.db("test").collection("devices");
 
-  // perform actions on the collection object
-  client.close();
-});
+  app.post('/submit-video', async (req, res, next) => {
+    videoPath = req.params.video.path;
+    const audioDest = 'audio.mp3';
 
-// add a  
-app.post('/submit-video', async (req, res, next) => {
-  videoPath = req.params.video.path;
+    // Extracts audio from video
+    const mp3AudioStream = await extractAudio({
+      input: videoPath,
+      output: audioDest
+    });
 
-  // Extracts audio from video
-  const mp3AudioStream = await extractAudio({
-    input: videoPath,
-    output: 'audio.mp3'
+    const transcript = speech.createTranscript(audioDest);
+
+    // TODO: change this to the username
+    const userID = 1;
+    const transcriptObj = { __id: userID, transcription: transcript };
+
+    try {
+      collection.insertOne(transcriptObj);
+    } catch (e) {
+      console.log(`Could not insert transcript: ${e}`);
+    }
   });
 
-  const transcript = speech.transcription(mp3AudioStream);
-
+  client.close();
 });
 
 app.use(express.static(__dirname + '/public'));
