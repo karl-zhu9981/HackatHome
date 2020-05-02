@@ -6,7 +6,7 @@
 const speech = require('@google-cloud/speech').v1p1beta1;
 const fs = require('fs');
 
-const createTranscript = async (audioPath, transcriptDest) => {
+const createTranscript = async (audioPath) => {
   // Creates a client
   const client = new speech.SpeechClient();
 
