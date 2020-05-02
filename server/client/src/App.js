@@ -33,6 +33,7 @@ state = {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         // Render the newly fetched data inside of this.state.data 
+        <p>Test</p>
         <p className="App-intro">{this.state.data}</p>
       </div>
     );
