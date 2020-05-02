@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
-const extractAudio = require('ffmeg-extract-audio');
-const speech = require('./speech.js')
+const extractAudio = require('ffmpeg-extract-audio');
+const speech = require('./speech')
+
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -19,7 +20,8 @@ client.connect(err => {
   const collection = client.db("test").collection("devices");
 
   app.post('/submit-video', async (req, res, next) => {
-    videoPath = req.params.video.path;
+    videoPath = req.body.video.path;
+    console.log(videoPath)
     const audioDest = 'audio.mp3';
 
     // Extracts audio from video

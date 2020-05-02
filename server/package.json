@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "@google-cloud/speech": "^3.6.0",
+    "express": "^4.17.1",
+    "ffmpeg-extract-audio": "^1.0.2",
+    "mongodb": "^3.5.7"
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {
   BrowserRouter as Router,
@@ -8,6 +9,7 @@ import {
 } from "react-router-dom";
 import Header from './Header';
 import Footer from './Footer';
+import UploadFile from './UploadFile';
 
 const StyledApp = styled.div`
   height: 100%;
@@ -45,7 +47,7 @@ export default () =>
         <div className="body">
           <Switch>
             <Route exact path="/">
-              <p>Placeholder</p>
+              <UploadFile/>
             </Route>
             <Route>
               <p>404</p>
