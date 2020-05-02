@@ -20,4 +20,10 @@ client.connect(err => {
   client.close();
 });
 
+// add a  
+app.get('/submit-video', (req, res, next) => {
+  console.log(req.query.videoURL);
+  res.send('ge');
+});
+
 app.use(express.static(__dirname + '/public'));
