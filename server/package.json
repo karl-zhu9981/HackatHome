@@ -17,6 +17,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "mongodb": "^3.5.7",
     "multer": "^1.4.2",
+    "stream-length": "^1.0.2",
     "tmp": "^0.2.1"
   }
 }

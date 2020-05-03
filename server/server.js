@@ -9,6 +9,7 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 const tmp = require('tmp');
 tmp.setGracefulCleanup()
 const fs =  require("fs")
+const streamLength = require("stream-length")
 
 const MAX_FILE_SIZE = 1073741824;
 
@@ -42,16 +43,13 @@ client.connect(err => {
     res.status(200).send('Video successfully uploaded.');
 
     // Extracts audio from video
-    const mp3AudioStream = await new Promise((resolve, reject) => {
-      const stream = ffmpeg(tmpobj)
+    const mp3AudioStream = ffmpeg(tmpobj)
       .audioChannels(0)
-      .format("mp3")
-      .on('end', () => {
-        console.log("end")
-        resolve(stream)
-      })
+      .format("s16le")
+      .audioBitrate("16k")
+      .audioChannels(2)
       .stream()
-    })
+
 
     createTranscript(mp3AudioStream);
 
