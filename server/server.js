@@ -8,8 +8,7 @@ const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 const tmp = require('tmp');
 tmp.setGracefulCleanup()
-const fs =  require("fs")
-const streamLength = require("stream-length")
+const fs = require("fs")
 
 const MAX_FILE_SIZE = 1073741824;
 
@@ -37,7 +36,7 @@ client.connect(err => {
 
   app.post('/submit-video', upload.single('file'), async (req, res, next) => {
     const videoBuffer = req.file.buffer;
-    
+
     const tmpobj = tmp.fileSync({ postfix: '.mp4' }).name;
     fs.writeFileSync(tmpobj, videoBuffer)
     res.status(200).send('Video successfully uploaded.');
@@ -50,18 +49,13 @@ client.connect(err => {
       .audioChannels(2)
       .stream()
 
-
     createTranscript(mp3AudioStream);
 
-    // TODO: change this to the username
-    // const userID = 1;
-    // const transcriptObj = { __id: userID, transcription: transcript };
-
-    // try {
-    //   collection.insertOne(transcriptObj);
-    // } catch (e) {
-    //   console.log(`Could not insert transcript: ${e}`);
-    // }
+    // TODO: Change this to the transcript from Google Cloud
+    const transcriptFile = new File();
+    // TODO: Change username to the user's name
+    const username = 1;
+    const document = { "__id": username, "transcriptFile": transcriptFile, "audioStream": mp3AudioStream };
   });
 
   client.close();
