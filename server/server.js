@@ -31,16 +31,17 @@ app.get('/express_backend', (req, res) => {
 
 const MongoClient = require('mongodb').MongoClient;
 console.log(process.env.DB_PASS)
-const uri = "mongodb+srv://dbUser:" + process.env.DB_PASS +  "@cluster0-u6drl.azure.mongodb.net/test";
+const uri = "mongodb+srv://dbUser:" + process.env.DB_PASS + "@cluster0-u6drl.azure.mongodb.net/test";
 const client = new MongoClient(uri, { useNewUrlParser: false });
 client.connect(err => {
-  if(err) {
+  if (err) {
     console.log(err)
   }
 
   console.log("Connected to MongoDB")
   const collection = client.db("zune-lectures").collection("lecture-data");
 
+  // Submission of the video
   app.post('/submit-video', upload.single('file'), async (req, res, next) => {
     const videoBuffer = req.file.buffer;
 
@@ -65,6 +66,42 @@ client.connect(err => {
     collection.insertOne(document)
       .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
       .catch(err => console.error(`Failed to insert item: ${err}`))
+  });
+
+  app.get('/get_transcript/:userID', async (req, res, next) => {
+    const userID = req.query.userID;
+
+    const query = { "id": userID };
+    const projection = { "transcription": 1 };
+
+    collection.findOne(query, projection)
+      .then(result => {
+        if (result) {
+          console.log(`Found transcript for ${userID}`);
+          res.send(result.transcription);
+        } else {
+          res.status(404).send(`User ${userID} has no transcript`);
+        }
+      })
+      .catch(err => console.error(`Error finding transcript for ${userID}`));
+  });
+
+  app.get('get_video/:userID', async (req, res, next) => {
+    const userID = req.query.userID;
+
+    const query = { "id": userID };
+    const projection = { "videoBuffer": 1 };
+
+    collection.findOne(query, projection)
+      .then(result => {
+        if (result) {
+          console.log(`Found video buffer for ${userID}`);
+          res.send(result.videoBuffer);
+        } else {
+          res.status(404).send(`User ${userId} has no video buffer`);
+        }
+      })
+      .catch(err => console.error(`Error finding video buffer for ${userID}`));
   });
 });
 
