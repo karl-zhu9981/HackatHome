@@ -43,19 +43,19 @@ client.connect(err => {
 
     // Extracts audio from video
     const mp3AudioStream = ffmpeg(tmpobj)
-      .audioChannels(0)
       .format("s16le")
       .audioBitrate("16k")
       .audioChannels(2)
       .stream()
 
-    createTranscript(mp3AudioStream);
+    const transcription = await createTranscript(mp3AudioStream);
+    console.log("Transcript: " + transcription)
 
-    // TODO: Change this to the transcript from Google Cloud
-    const transcriptFile = new File();
-    // TODO: Change username to the user's name
-    const username = 1;
-    const document = { "__id": username, "transcriptFile": transcriptFile, "audioStream": mp3AudioStream };
+    // // TODO: Change this to the transcript from Google Cloud
+    // const transcriptFile = new File();
+    // // TODO: Change username to the user's name
+    // const username = 1;
+    // const document = { "__id": username, "transcriptFile": transcriptFile, "audioStream": mp3AudioStream };
   });
 
   client.close();
