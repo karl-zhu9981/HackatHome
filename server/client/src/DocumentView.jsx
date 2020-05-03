@@ -5,8 +5,15 @@ import Loader from './Loader';
 import TextAnnotater from './TextAnnotater'
 import axios from 'axios'
 import promiseRetry from 'promise-retry'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 const StyledDocumentView = styled.div`
+.video {
+    justify-content: left;
+    width: 100%;
+}
 
 `
 
@@ -30,11 +37,12 @@ export default withRouter((props) => {
 
     return <StyledDocumentView>
         {!document ? <Loader /> : 
-            <>
-            <video controls>
+            <Container>
+            <Row>
+              <Col><video className="video" controls>
              <source type="video/mp4" src={document.video} />
-             </video>
-            <TextAnnotater document={document}/>
-            </>}
+             </video></Col>
+              <Col><TextAnnotater document={document}/></Col>
+            </Row></Container>}
     </StyledDocumentView>
 })

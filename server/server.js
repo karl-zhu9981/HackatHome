@@ -106,4 +106,5 @@ client.connect(err => {
   });
 });
 
-app.use(express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/public'));
+app.use('/doc/*', express.static(__dirname + '/public'));

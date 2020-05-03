@@ -58,7 +58,7 @@ export default ({document}) => {
             {allNotes.map((val, idx) => <ul key={idx}>{val}</ul>)}
             <MonacoEditor
             ref={monaco}
-            width="800"
+            width="600"
             height="600"
             language="javascript"
             theme="vs-dark"

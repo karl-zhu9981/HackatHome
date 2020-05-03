@@ -11,12 +11,14 @@ import Header from './Header';
 import Footer from './Footer';
 import UploadFile from './UploadFile';
 import DocumentView from './DocumentView'
+import Background from './clean-cyan-background-2.png'
 
 const StyledApp = styled.div`
   height: 100%;
   background-color: aquamarine;
   position: absolute;
   width: 100%;
+  background-image: url(${Background});
 
   .contents {
     display: flex;
