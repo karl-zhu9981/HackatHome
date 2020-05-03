@@ -6,9 +6,11 @@
 const speech = require('@google-cloud/speech').v1p1beta1;
 const fs = require('fs');
 
-const createTranscript = (audioStream) => {
+const createTranscript = async (audioPath) => {
+  // Creates a client
   const client = new speech.SpeechClient();
 
+  const filename = './audio.mp3';
   const model = 'video';
   const encoding = 'LINEAR16';
   const sampleRateHertz = 16000;
@@ -26,20 +28,15 @@ const createTranscript = (audioStream) => {
 
   const request = {
     config: config,
-    interimResults: false
+    audio: audio,
   };
 
-  // Stream the audio to the Google Cloud Speech API
-  const recognizeStream = client
-    .streamingRecognize(request)
-    .on('error', console.error)
-    .on('data', data => {
-      console.log(
-        `Transcription: ${data.results[0].alternatives[0].transcript}`
-      );
-    });
+  // Detects speech in the audio file
+  const [response] = await client.recognize(request);
+  const transcription = response.results
+    .map(result => result.alternatives[0].transcript)
+    .join('\n');
+  console.log('Transcription: ', transcription);
 
-  audioStream.pipe(recognizeStream);
+  return transcription;
 }
-
-module.exports = createTranscript;
