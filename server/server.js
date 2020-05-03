@@ -42,7 +42,9 @@ client.connect(err => {
   const collection = client.db("zune-lectures").collection("lecture-data");
 
   // Submission of the video
-  app.post('/submit-video', upload.single('file'), async (req, res, next) => {
+  app.post('/submit-video/:userID', upload.single('file'), async (req, res, next) => {
+    const userID = Number(req.params.userID);
+
     const videoBuffer = req.file.buffer;
 
     const tmpobj = tmp.fileSync({ postfix: '.mp4' }).name;
@@ -60,8 +62,7 @@ client.connect(err => {
     console.log("Transcript: " + transcription)
 
     // TODO: Change username to the user's name
-    const username = 1;
-    const document = { "id": username, "transcription": transcription, "videoBuffer": videoBuffer };
+    const document = { "id": userID, "transcription": transcription, "videoBuffer": videoBuffer };
 
     collection.insertOne(document)
       .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))

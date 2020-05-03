@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Loader from './Loader';
 import TextAnnotater from './TextAnnotater'
 import axios from 'axios'
+import promiseRetry from 'promise-retry'
 
 const StyledDocumentView = styled.div`
 
@@ -18,7 +19,13 @@ export default withRouter((props) => {
             let [text, video] = await Promise.all([axios.get("/get_transcript/" + doc), axios.get("/get_video/" + doc)]);
             setDocument({ id: doc, text: text.data, video: `data:application/video;base64,${video.data}`});
         }
-        fetchData()
+        promiseRetry(function (retry, number) {
+            console.log(number)
+            return fetchData().catch(retry);
+        }, {
+            factor: 1.3,
+            minTimeout: 100
+        })
     }, [doc])
 
     return <StyledDocumentView>

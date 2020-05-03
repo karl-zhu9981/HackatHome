@@ -11,6 +11,7 @@
     "ffmpeg-extract-audio": "^1.0.2",
     "js-base64": "^2.5.2",
     "multer": "^1.4.2",
+    "promise-retry": "^1.1.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
