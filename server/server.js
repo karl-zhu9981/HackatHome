@@ -9,6 +9,7 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 const tmp = require('tmp');
 tmp.setGracefulCleanup()
 const fs = require("fs")
+require('dotenv').config()
 
 const MAX_FILE_SIZE = 1073741824;
 
@@ -27,10 +28,16 @@ app.get('/express_backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
 
+
 const MongoClient = require('mongodb').MongoClient;
-const uri = `mongodb+srv://hackathome:${process.env.DB_PASS}@hackathome-yeaxx.gcp.mongodb.net/test?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+console.log(process.env.DB_PASS)
+const uri = "mongodb+srv://dbUser:" + process.env.DB_PASS +  "@cluster0-u6drl.azure.mongodb.net/test";
+const client = new MongoClient(uri, { useNewUrlParser: false });
 client.connect(err => {
+  if(err) {
+    console.log(err)
+  }
+
   console.log("Connected to MongoDB")
   const collection = client.db("zune-lectures").collection("lecture-data");
 
@@ -57,10 +64,8 @@ client.connect(err => {
 
     collection.insertOne(document)
       .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
-      .catch(err => console.error(`Failed to insert item: ${err}`));
+      .catch(err => console.error(`Failed to insert item: ${err}`))
   });
-
-  client.close();
 });
 
 app.use(express.static(__dirname + '/public'));
