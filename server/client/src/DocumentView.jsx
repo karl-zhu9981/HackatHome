@@ -3,12 +3,11 @@ import { withRouter, useParams } from 'react-router'
 import styled from 'styled-components'
 import Loader from './Loader';
 import TextAnnotater from './TextAnnotater'
+import axios from 'axios'
 
 const StyledDocumentView = styled.div`
 
 `
-
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default withRouter((props) => {
     const { doc } = useParams();
@@ -16,27 +15,8 @@ export default withRouter((props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log(doc);
-            await sleep(1000);
-            setDocument({ id: doc, text: `kgjlfd
-            gfd
-            fdg
-            gdf
-            dfg
-            fdg
-            
-            dfg
-            dfg
-            dfg
-            d
-            fg
-            fdgfgd
-            fgddffgd
-            ggdf
-            g
-            fd
-            fdg          
-                                                                         gfdgfd` });
+            const resp = await axios.get("/get_transcript/" + doc);
+            setDocument({ id: doc, text: resp.data});
         }
         fetchData()
     }, [doc])

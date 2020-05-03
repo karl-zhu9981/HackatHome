@@ -69,7 +69,7 @@ client.connect(err => {
   });
 
   app.get('/get_transcript/:userID', async (req, res, next) => {
-    const userID = req.query.userID;
+    const userID = Number(req.params.userID);
 
     const query = { "id": userID };
     const projection = { "transcription": 1 };
@@ -86,8 +86,8 @@ client.connect(err => {
       .catch(err => console.error(`Error finding transcript for ${userID}`));
   });
 
-  app.get('get_video/:userID', async (req, res, next) => {
-    const userID = req.query.userID;
+  app.get('/get_video/:userID', async (req, res, next) => {
+    const userID = Number(req.params.userID);
 
     const query = { "id": userID };
     const projection = { "videoBuffer": 1 };
