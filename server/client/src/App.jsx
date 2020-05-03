@@ -10,6 +10,7 @@ import {
 import Header from './Header';
 import Footer from './Footer';
 import UploadFile from './UploadFile';
+import DocumentView from './DocumentView'
 
 const StyledApp = styled.div`
   height: 100%;
@@ -48,6 +49,9 @@ export default () =>
           <Switch>
             <Route exact path="/">
               <UploadFile/>
+            </Route>
+            <Route exact path="/doc/:doc">
+              <DocumentView />
             </Route>
             <Route>
               <p>404</p>
