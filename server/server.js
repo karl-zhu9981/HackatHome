@@ -28,11 +28,11 @@ app.get('/express_backend', (req, res) => {
 });
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://hackathome:" + process.env.DB_PASS + "@hackathome-yeaxx.gcp.mongodb.net/test?retryWrites=true&w=majority";
+const uri = `mongodb+srv://hackathome:${process.env.DB_PASS}@hackathome-yeaxx.gcp.mongodb.net/test?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   console.log("Connected to MongoDB")
-  const collection = client.db("test").collection("devices");
+  const collection = client.db("zune-lectures").collection("lecture-data");
 
   app.post('/submit-video', upload.single('file'), async (req, res, next) => {
     const videoBuffer = req.file.buffer;
@@ -51,11 +51,13 @@ client.connect(err => {
     const transcription = await createTranscript(mp3AudioStream);
     console.log("Transcript: " + transcription)
 
-    // // TODO: Change this to the transcript from Google Cloud
-    // const transcriptFile = new File();
-    // // TODO: Change username to the user's name
-    // const username = 1;
-    // const document = { "__id": username, "transcriptFile": transcriptFile, "audioStream": mp3AudioStream };
+    // TODO: Change username to the user's name
+    const username = 1;
+    const document = { "__id": username, "transcription": transcription, "videoBuffer": videoBuffer };
+
+    collection.insertOne(document)
+      .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
+      .catch(err => console.error(`Failed to insert item: ${err}`))
   });
 
   client.close();
