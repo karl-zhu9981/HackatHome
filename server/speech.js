@@ -20,10 +20,7 @@ const createTranscript = (audioStream) => {
     languageCode: languageCode,
     model: model,
   };
-  const audio = {
-    content: fs.readFileSync(audioPath).toString('base64'),
-  };
-
+  
   const request = {
     config: config,
     interimResults: false
