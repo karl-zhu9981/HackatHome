@@ -1,4 +1,4 @@
 import React from 'react';
 
 export default () =>
-<h5>Footer</h5>
+<h6>Authors: Ryan Larkin, Dmitry Tsarapkine, Karl Zhu, Carmen Lamprecht</h6>

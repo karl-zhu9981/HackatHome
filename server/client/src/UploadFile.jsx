@@ -6,7 +6,7 @@ import axios from 'axios'
 const StyledUploadFile = styled.div`
     .file {
         width: 50%;
-        text-align: left
+        text-align: left;
     }
 
     button[disabled] {
