@@ -53,11 +53,11 @@ client.connect(err => {
 
     // TODO: Change username to the user's name
     const username = 1;
-    const document = { "__id": username, "transcription": transcription, "videoBuffer": videoBuffer };
+    const document = { "id": username, "transcription": transcription, "videoBuffer": videoBuffer };
 
     collection.insertOne(document)
       .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
-      .catch(err => console.error(`Failed to insert item: ${err}`))
+      .catch(err => console.error(`Failed to insert item: ${err}`));
   });
 
   client.close();
