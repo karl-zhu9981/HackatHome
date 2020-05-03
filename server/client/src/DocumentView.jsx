@@ -15,14 +15,19 @@ export default withRouter((props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const resp = await axios.get("/get_transcript/" + doc);
-            setDocument({ id: doc, text: resp.data});
+            let [text, video] = await Promise.all([axios.get("/get_transcript/" + doc), axios.get("/get_video/" + doc)]);
+            setDocument({ id: doc, text: text.data, video: `data:application/video;base64,${video.data}`});
         }
         fetchData()
     }, [doc])
 
     return <StyledDocumentView>
         {!document ? <Loader /> : 
-            <TextAnnotater document={document}/>}
+            <>
+            <video controls>
+             <source type="video/mp4" src={document.video} />
+             </video>
+            <TextAnnotater document={document}/>
+            </>}
     </StyledDocumentView>
 })
