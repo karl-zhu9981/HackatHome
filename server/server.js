@@ -31,7 +31,7 @@ app.get('/express_backend', (req, res) => {
 
 const MongoClient = require('mongodb').MongoClient;
 console.log(process.env.DB_PASS)
-const uri = "mongodb+srv://dbUser:" + process.env.DB_PASS + "@cluster0-u6drl.azure.mongodb.net/test";
+const uri = "mongodb+srv://dbUser:a@cluster0-ruk6n.mongodb.net/test?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: false });
 client.connect(err => {
   if (err) {
