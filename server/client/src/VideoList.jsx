@@ -3,13 +3,17 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Loader from "./Loader";
 import axios from "axios";
 import { useHistory } from "react-router";
-import styled from "styled-components"
+import styled from "styled-components";
 
-const StyledListGroup = styled(ListGroup)`
-    overflow: auto;
-    margin-top: 5em;
-    margin-left: 25%;
-    margin-right: 25%;
+const StyledVideoList = styled.div`
+  overflow: auto;
+  margin-top: 5em;
+  margin-left: 25%;
+  margin-right: 25%;
+
+  .title {
+    text-align: left;
+  }
 `;
 
 const handleClick = (e, history) => {
@@ -32,22 +36,27 @@ export default () => {
     fetchData();
   }, [err]);
 
-  return err ? (
-    <>Could not load videos</>
-  ) : names ? (
-    <StyledListGroup horizontal>
-      {names.map((name) => (
-        <ListGroup.Item
-          key={name}
-          action
-          value={name}
-          onClick={(evt) => handleClick(evt, history)}
-        >
-          {name}
-        </ListGroup.Item>
-      ))}
-    </StyledListGroup>
-  ) : (
-    <Loader />
+  return (
+    <StyledVideoList>
+      <h4 className="title">Uploaded Videos:</h4>
+      {err ? (
+        <>Could not load videos</>
+      ) : names ? (
+        <ListGroup horizontal>
+          {names.map((name) => (
+            <ListGroup.Item
+              key={name}
+              action
+              value={name}
+              onClick={(evt) => handleClick(evt, history)}
+            >
+              {name}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      ) : (
+        <Loader />
+      )}{" "}
+    </StyledVideoList>
   );
 };

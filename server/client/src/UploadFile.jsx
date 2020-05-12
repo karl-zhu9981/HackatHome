@@ -31,7 +31,12 @@ const uploadFile = async (file, id, history, setLoading) => {
     formData.append("file", file)
 
     setLoading(true);
-    axios.post("/submit-video/" + id, formData, {}).then(() => history.push("/doc/" + id))
+    await axios.post("/submit-video/" + id, formData, {});
+    while(!(await axios.get("/videos")).data.includes(id)) {
+        // Don't spam the server
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+    history.push("/doc/" + id)
 }
 
 export default () => {
