@@ -51,7 +51,6 @@ client.connect((err) => {
 
       const tmpobj = tmp.fileSync({ postfix: ".mp4" });
       fs.writeFileSync(tmpobj.name, videoBuffer);
-      res.status(200).send("Video successfully uploaded.");
 
       // await new Promise(resolve => setTimeout(resolve, 60000));
       // Extracts audio from video
@@ -93,11 +92,14 @@ client.connect((err) => {
           )
         )
         .catch((err) => console.error(`Failed to insert item: ${err}`));
+
+        
+      res.status(200).send("Video successfully uploaded.");
     }
   );
 
   app.get("/get_transcript/:userID", async (req, res, next) => {
-    const userID = Number(req.params.userID);
+    const userID = req.params.userID;
 
     const query = { id: userID };
     const projection = { transcription: 1 };
@@ -116,7 +118,7 @@ client.connect((err) => {
   });
 
   app.get("/get_video/:userID", async (req, res, next) => {
-    const userID = Number(req.params.userID);
+    const userID = req.params.userID;
 
     const query = { id: userID };
     const projection = { videoBuffer: 1 };
@@ -135,6 +137,10 @@ client.connect((err) => {
         console.error(`Error finding video buffer for ${userID}`)
       );
   });
+
+  app.get("/videos", async (req, res, next) => {
+    res.status(200).send(await collection.distinct("id"))
+  })
 });
 
 app.use("/", express.static(__dirname + "/public"));

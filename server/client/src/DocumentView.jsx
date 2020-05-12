@@ -20,11 +20,17 @@ const StyledDocumentView = styled.div`
 export default withRouter((props) => {
     const { doc } = useParams();
     const [document, setDocument] = useState(null)
+    const [err, setErr] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            let [text, video] = await Promise.all([axios.get("/get_transcript/" + doc), axios.get("/get_video/" + doc)]);
-            setDocument({ id: doc, text: text.data, video: `data:application/video;base64,${video.data}`});
+            try {
+                let [text, video] = await Promise.all([axios.get("/get_transcript/" + doc), axios.get("/get_video/" + doc)]);
+                setDocument({ id: doc, text: text.data, video: `data:application/video;base64,${video.data}`});
+            }
+            catch(ex) {
+                setErr(true);
+            }
         }
         promiseRetry(function (retry, number) {
             console.log(number)
@@ -36,7 +42,7 @@ export default withRouter((props) => {
     }, [doc])
 
     return <StyledDocumentView>
-        {!document ? <Loader /> : 
+        {err ? <>Not found</> : !document ? <Loader /> : 
             <Container>
             <Row>
               <Col><video className="video" controls>
