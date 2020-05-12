@@ -45,7 +45,7 @@ client.connect((err) => {
     "/submit-video/:userID",
     upload.single("file"),
     async (req, res, next) => {
-      const userID = Number(req.params.userID);
+      const userID = req.params.userID;
 
       const videoBuffer = req.file.buffer;
 

@@ -12,6 +12,7 @@ import Footer from './Footer';
 import UploadFile from './UploadFile';
 import DocumentView from './DocumentView'
 import Background from './clean-cyan-background-2.png'
+import VideoList from './VideoList';
 
 const StyledApp = styled.div`
   height: 100%;
@@ -39,6 +40,10 @@ const StyledApp = styled.div`
     flex: 0
   }
 
+  .videoList {
+    padding: 3em;
+  }
+
   text-align: center;
 `
 
@@ -51,6 +56,9 @@ export default () =>
           <Switch>
             <Route exact path="/">
               <UploadFile/>
+              <div className="videoList">
+                <VideoList/>
+              </div>
             </Route>
             <Route exact path="/doc/:doc">
               <DocumentView />
